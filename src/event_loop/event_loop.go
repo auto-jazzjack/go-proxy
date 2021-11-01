@@ -1,4 +1,4 @@
-package eventloop
+package Event_loop
 
 import (
 	"net/http"
@@ -11,9 +11,9 @@ type Eventloop struct {
 	size     int64
 }
 
-func NewEventLoop() *Eventloop {
+func NewEventLoop(port int) *Eventloop {
 	return &Eventloop{
-		channels: []*ch.Channel{ch.NewChannel(9290)},
+		channels: []*ch.Channel{ch.NewChannel(port)},
 	}
 }
 
