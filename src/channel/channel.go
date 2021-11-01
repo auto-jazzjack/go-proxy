@@ -1,4 +1,4 @@
-package channel
+package Channel
 
 import (
 	"fmt"
@@ -30,7 +30,7 @@ func createRequestForUpstream(req *http.Request, port int) *http.Request {
 	var retv, _ = http.NewRequest(req.Method, newHost, nil)
 	return retv
 }
-func (h Channel) callRemote(res *http.ResponseWriter, req *http.Request) {
+func (h Channel) CallRemote(res *http.ResponseWriter, req *http.Request) {
 	var replaced = createRequestForUpstream(req, h.port)
 	var resp, err = h.client.Do(replaced)
 
