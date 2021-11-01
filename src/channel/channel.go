@@ -24,7 +24,7 @@ func createRequestForUpstream(req *http.Request, port int) *http.Request {
 	if len(host) != 2 {
 		panic(newHost)
 	} else {
-		newHost = host[0] + ":" + fmt.Sprint(port)
+		newHost = "http://" + host[0] + ":" + fmt.Sprint(port)
 	}
 
 	var retv, _ = http.NewRequest(req.Method, newHost, nil)
