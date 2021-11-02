@@ -1,13 +1,14 @@
-package proxies
+package Proxies
 
 import (
 	"io/ioutil"
 	"log"
 	proto "github.com/golang/protobuf/proto"
+	"proxy/proto/config"
    
 )
 
-func (c *pro.Config) getConf() *conf {
+func getConf(cfg config) {
 
 	proto.
 	yamlFile, err := ioutil.ReadFile("conf.yaml")

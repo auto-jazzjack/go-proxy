@@ -1,6 +1,6 @@
 syntax = "proto3";
 package proxy_config;
-option go_package = "go/proxy/proto";
+option go_package = "go/proxy/config";
 
 
 //protoc -I. --go_out=. config.proto

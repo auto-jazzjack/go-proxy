@@ -1,7 +1,7 @@
-package proxies
+package Proxies
 
 import (
-	el "proxy/event_loop"
+	el "proxy/src/event_loop"
 )
 
 type Proxies struct {
