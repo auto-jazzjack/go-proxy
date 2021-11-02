@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
-	el "proxy/src/event_loop"
+	el "proxy/event_loop"
 )
 
 type Channel struct {

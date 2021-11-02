@@ -1,7 +1,15 @@
 package proxies
 
-/*func (c *Config) getConf() *conf {
+import (
+	"io/ioutil"
+	"log"
+	proto "github.com/golang/protobuf/proto"
+   
+)
 
+func (c *pro.Config) getConf() *conf {
+
+	proto.
 	yamlFile, err := ioutil.ReadFile("conf.yaml")
 	if err != nil {
 		log.Printf("yamlFile.Get err   #%v ", err)
@@ -12,4 +20,4 @@ package proxies
 	}
 
 	return c
-}*/
+}

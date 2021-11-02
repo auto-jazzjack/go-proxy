@@ -2,7 +2,7 @@ package Event_loop
 
 import (
 	"net/http"
-	ch "proxy/src/channel"
+	ch "proxy/channel"
 )
 
 type Eventloop struct {
