@@ -1,13 +1,6 @@
 package proxies
 
-import (
-	"io/ioutil"
-	"log"
-
-	"gopkg.in/yaml.v2"
-)
-
-func (c *Config) getConf() *conf {
+/*func (c *Config) getConf() *conf {
 
 	yamlFile, err := ioutil.ReadFile("conf.yaml")
 	if err != nil {
@@ -19,4 +12,4 @@ func (c *Config) getConf() *conf {
 	}
 
 	return c
-}
+}*/
