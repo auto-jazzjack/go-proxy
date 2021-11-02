@@ -3,7 +3,7 @@ package proxy_config;
 option go_package = "go/proxy/proto";
 
 
-//protoc -I. --go_out=. ./config.proto
+//protoc -I. --go_out=. config.proto
 message Proxy {
     repeated string upstreams = 1;
     RateLimit rate_limit = 2;
