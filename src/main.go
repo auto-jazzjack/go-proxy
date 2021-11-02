@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
-	el "proxy/event_loop"
+	px "proxy/src/proxies"
 )
 
 type Channel struct {
@@ -12,6 +12,6 @@ type Channel struct {
 
 func main() {
 	fmt.Print("started")
-	var handler = el.NewEventLoop(3000)
-	http.ListenAndServe(":9393", handler)
+	var pro = px.NewProxies(px.GetConf())
+	http.ListenAndServe(":9393", pro.GetEventLoop())
 }

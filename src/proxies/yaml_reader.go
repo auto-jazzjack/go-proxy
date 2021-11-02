@@ -1,24 +1,27 @@
 package Proxies
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
-	proto "github.com/golang/protobuf/proto"
-	"proxy/proto/config"
-   
+	config "proxy/proto/go/proxy/config"
+
+	yaml "gopkg.in/yaml.v2"
 )
 
-func getConf(cfg config) {
+func GetConf() *config.Proxy {
 
-	proto.
-	yamlFile, err := ioutil.ReadFile("conf.yaml")
+	yamlFile, err := ioutil.ReadFile("../configuration/proxy.yaml")
 	if err != nil {
 		log.Printf("yamlFile.Get err   #%v ", err)
 	}
-	err = yaml.Unmarshal(yamlFile, c)
+
+	var v = &config.Proxy{}
+	err = yaml.Unmarshal(yamlFile, v)
 	if err != nil {
 		log.Fatalf("Unmarshal: %v", err)
 	}
 
-	return c
+	fmt.Println(v)
+	return v
 }

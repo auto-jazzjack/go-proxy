@@ -11,4 +11,5 @@ message Proxy {
 
 message RateLimit {
     int64 qps = 1;
+    int64 threshhold = 2;
 }
