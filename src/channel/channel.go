@@ -24,6 +24,7 @@ func NewChannel(port int) *Channel {
 		port:   port,
 	}
 }
+
 func createRequestForUpstream(req *http.Request, port int) *http.Request {
 	var host = strings.Split(req.Host, ":")
 	var newHost = "http://"
