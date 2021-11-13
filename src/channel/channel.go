@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
 type Channel struct {
 	client *http.Client
 	port   int
+	host   string
 }
 
 var headers = map[string]interface{}{
@@ -18,10 +20,23 @@ var headers = map[string]interface{}{
 	"Date":           nil,
 }
 
-func NewChannel(port int) *Channel {
+func NewChannel(host string) *Channel {
+
+	var v = strings.Split(host, ":")
+
+	if len(v) != 2 {
+		panic(v)
+	}
+	var _port, err = strconv.Atoi(v[1])
+
+	if err != nil {
+		panic(v)
+	}
+
 	return &Channel{
 		client: &http.Client{},
-		port:   port,
+		host:   v[0],
+		port:   _port,
 	}
 }
 

@@ -11,12 +11,18 @@ type Eventloop struct {
 	size     int64
 }
 
-func NewEventLoop(port int) *Eventloop {
+func NewEventLoop() *Eventloop {
 	return &Eventloop{
-		channels: []*ch.Channel{ch.NewChannel(port)},
+		channels: []*ch.Channel{},
 	}
 }
 
-func (el Eventloop) ServeHTTP(res http.ResponseWriter, req *http.Request) {
+func (el *Eventloop) RegisterChannel(host string) {
+	el.channels = append(el.channels, ch.NewChannel(host))
+	el.pos = 0
+	el.size = int64(len(el.channels))
+}
+
+func (el *Eventloop) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	el.channels[el.pos].CallRemote(&res, req)
 }
