@@ -20,14 +20,7 @@ var headers = map[string]interface{}{
 	"Date":           nil,
 }
 
-func NewChannel(port int) *Channel {
-	return &Channel{
-		client: &http.Client{},
-		port:   port,
-	}
-}
-
-func NewChannel0(host string) *Channel {
+func NewChannel(host string) *Channel {
 
 	var v = strings.Split(host, ":")
 

@@ -3,10 +3,12 @@ package Proxies
 import (
 	config "proxy/proto/go/proxy/config"
 	el "proxy/src/event_loop"
+	wt "proxy/src/watch"
 )
 
 type Proxies struct {
-	event_loop *el.Eventloop
+	event_loop  *el.Eventloop
+	admin_watch chan wt.Event
 }
 
 func NewProxies(cfg *config.Proxy) *Proxies {

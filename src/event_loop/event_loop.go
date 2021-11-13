@@ -18,7 +18,7 @@ func NewEventLoop() *Eventloop {
 }
 
 func (el *Eventloop) RegisterChannel(host string) {
-	el.channels = append(el.channels, ch.NewChannel0(host))
+	el.channels = append(el.channels, ch.NewChannel(host))
 	el.pos = 0
 	el.size = int64(len(el.channels))
 }
