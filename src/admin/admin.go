@@ -14,8 +14,15 @@ type AdminImpl interface {
 	update()
 }
 
-func NewAdmin() *Admin {
-	return &Admin{}
+func NewAdmin(pxx *px.Proxies) *Admin {
+
+	var _chan = make(chan wt.Event)
+
+	pxx.SetAdminWatch(_chan)
+
+	return &Admin{
+		pxx, _chan,
+	}
 }
 
 func (adm *Admin) update() {

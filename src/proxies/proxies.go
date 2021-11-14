@@ -22,6 +22,9 @@ func NewProxies(cfg *config.Proxy) *Proxies {
 	return retv
 }
 
+func (px *Proxies) SetAdminWatch(chen chan wt.Event) {
+	px.admin_watch = chen
+}
 func (px *Proxies) GetEventLoop() *el.Eventloop {
 	return px.event_loop
 }
