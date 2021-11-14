@@ -65,13 +65,13 @@ func (h Channel) CallRemote(res *http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		panic(err)
 	} else {
-		(*res).WriteHeader(resp.StatusCode)
 
 		var body, err2 = ioutil.ReadAll(resp.Body)
 		if err2 != nil {
 			panic(err2)
 		}
 
+		(*res).WriteHeader(resp.StatusCode)
 		for k := range headers {
 			(*res).Header().Add(k, resp.Header.Get(k))
 		}

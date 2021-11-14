@@ -11,6 +11,10 @@ type Eventloop struct {
 	size     int64
 }
 
+type EventloopImpl interface {
+	getNext() int64
+}
+
 func NewEventLoop() *Eventloop {
 	return &Eventloop{
 		channels: []*ch.Channel{},
@@ -24,5 +28,10 @@ func (el *Eventloop) RegisterChannel(host string) {
 }
 
 func (el *Eventloop) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	el.channels[el.pos].CallRemote(&res, req)
+	el.channels[el.getNext()].CallRemote(&res, req)
+}
+
+func (el *Eventloop) getNext() int64 {
+	el.pos = (el.pos + 1) % el.size
+	return el.pos
 }
