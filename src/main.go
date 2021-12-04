@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
-	px "proxy/src/proxies"
+	ad "proxy/src/admin"
 )
 
 type Channel struct {
@@ -12,6 +12,6 @@ type Channel struct {
 
 func main() {
 	fmt.Print("started")
-	var pro = px.NewProxies(px.GetConf())
-	http.ListenAndServe(":9393", pro.GetEventLoop())
+	var admin = ad.NewAdmin()
+	http.ListenAndServe(":9393", admin.GetProxy().GetEventLoop())
 }

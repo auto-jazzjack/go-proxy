@@ -1,4 +1,4 @@
-package Proxies
+package Repository
 
 import (
 	"fmt"
@@ -8,7 +8,19 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-func GetConf() *config.Proxy {
+type Repository struct{
+
+}
+
+type RepositoryImpl interface{
+	GetConf()
+}
+
+func NewRepository() *Repository {
+	return &Repository{}
+}
+
+func (rp *Repository) GetConf() *config.Proxy {
 
 	yamlFile, err := ioutil.ReadFile("../configuration/proxy.yaml")
 	if err != nil {

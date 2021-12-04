@@ -2,6 +2,7 @@ package Proxies
 
 import (
 	"proxy/proto/go/proxy/config"
+	rm "go.uber.org/ratelimit"
 )
 
 type RateLimiterImpl ProxyPlugin
