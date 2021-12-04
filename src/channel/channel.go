@@ -78,3 +78,7 @@ func (h Channel) CallRemote(res *http.ResponseWriter, req *http.Request) {
 		(*res).Write(body)
 	}
 }
+
+func (h Channel) CallTooManyRequest(res *http.ResponseWriter) {
+	(*res).WriteHeader(429)
+}
