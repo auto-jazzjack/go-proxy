@@ -1,4 +1,4 @@
-package Proxies
+package Caller
 
 import "proxy/proto/go/proxy/config"
 

@@ -1,19 +1,22 @@
-package Event_loop
+package Caller
 
 import (
 	"net/http"
+	"proxy/proto/go/proxy/config"
 	ch "proxy/src/channel"
 )
 
 type Eventloop struct {
 	channels []*ch.Channel
+	rl       *RateLimiter
 	pos      int64
 	size     int64
 }
 
-func NewEventLoop() *Eventloop {
+func NewEventLoop(cfg *config.Proxy) *Eventloop {
 	return &Eventloop{
 		channels: []*ch.Channel{},
+		rl:       NewRateLimiter(cfg.RateLimit),
 	}
 }
 
@@ -24,5 +27,14 @@ func (el *Eventloop) RegisterChannel(host string) {
 }
 
 func (el *Eventloop) ServeHTTP(res http.ResponseWriter, req *http.Request) {
+	if el.rl != nil {
+		if el.rl.TryConsume(1) {
+			el.channels[el.pos].CallRemote(&res, req)
+		} else {
+			el.channels[el.pos].CallTooManyRequest(&res)
+		}
+		return
+	}
+
 	el.channels[el.pos].CallRemote(&res, req)
 }

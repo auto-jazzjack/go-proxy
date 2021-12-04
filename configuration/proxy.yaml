@@ -1,3 +1,8 @@
-upstreams: 
-  - 127.0.0.1:3000
-  - 127.0.0.1:3001
+config:
+  upstreams:
+    - 127.0.0.1:3000
+    - 127.0.0.1:3001
+  rate_limit:
+    qps: 1
+    threshhold: 1
+    threshholdRatio: 0.1

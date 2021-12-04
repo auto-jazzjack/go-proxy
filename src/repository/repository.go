@@ -3,16 +3,18 @@ package Repository
 import (
 	"fmt"
 	"io/ioutil"
+
+	"github.com/golang/protobuf/jsonpb"
+
 	config "proxy/proto/go/proxy/config"
 
-	yaml "gopkg.in/yaml.v2"
+	yamlToJson "github.com/ghodss/yaml"
 )
 
-type Repository struct{
-
+type Repository struct {
 }
 
-type RepositoryImpl interface{
+type RepositoryImpl interface {
 	GetConf()
 }
 
@@ -27,12 +29,15 @@ func (rp *Repository) GetConf() *config.Proxy {
 		panic("yamlFile.Get err")
 	}
 
-	var v = &config.Proxy{}
-	err = yaml.Unmarshal(yamlFile, v)
-	if err != nil {
+	var v = &config.Config{}
+
+	var json, err1 = yamlToJson.YAMLToJSON(yamlFile)
+	jsonpb.UnmarshalString(string(json), v)
+
+	if err1 != nil {
 		panic("marformed" + string(yamlFile))
 	}
 
 	fmt.Println(v)
-	return v
+	return v.Config
 }

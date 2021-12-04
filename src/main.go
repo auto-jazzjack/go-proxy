@@ -11,7 +11,7 @@ type Channel struct {
 }
 
 func main() {
-	fmt.Print("started")
+	fmt.Println("started")
 	var admin = ad.NewAdmin()
 	http.ListenAndServe(":9393", admin.GetProxy().GetEventLoop())
 }
