@@ -9,11 +9,13 @@ import (
 type Proxies struct {
 	event_loop  *el.Eventloop
 	admin_watch chan wt.Event
+	rl          *RateLimiter
 }
 
 func NewProxies(cfg *config.Proxy) *Proxies {
 	var retv = &Proxies{
 		event_loop: el.NewEventLoop(),
+		rl:         NewRateLimiter(),
 	}
 
 	for _, host := range cfg.GetUpstreams() {
