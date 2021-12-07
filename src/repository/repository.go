@@ -12,6 +12,7 @@ import (
 )
 
 type Repository struct {
+	version string
 }
 
 type RepositoryImpl interface {
@@ -19,12 +20,12 @@ type RepositoryImpl interface {
 }
 
 func NewRepository() *Repository {
-	return &Repository{}
+	return &Repository{version: ""}
 }
 
 func (rp *Repository) GetConf() *config.Proxy {
 
-	yamlFile, err := ioutil.ReadFile("../configuration/proxy.yaml")
+	yamlFile, err := ioutil.ReadFile("../configuration/proxy" + rp.version + ".yaml")
 	if err != nil {
 		panic("yamlFile.Get err")
 	}
@@ -40,4 +41,30 @@ func (rp *Repository) GetConf() *config.Proxy {
 
 	fmt.Println(v)
 	return v.Config
+}
+
+func getLatestVersion() string {
+	var files, err = ioutil.ReadDir("../configuration/proxy")
+
+	if err != nil {
+		panic("Cannot get latest file")
+	}
+
+	if len(files) <= 0 {
+		panic("Cannot get any file")
+	}
+
+	var retv = files[0].Name()
+
+	for _, itr := range files {
+		if retv < itr.Name() {
+			retv = itr.Name()
+		}
+	}
+	return retv
+
+}
+
+func (rp *Repository) CreateRevision() {
+	//copy current proto file with version
 }
