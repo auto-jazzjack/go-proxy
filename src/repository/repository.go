@@ -47,6 +47,7 @@ func getLatestVersion() string {
 	var files, err = ioutil.ReadDir("../configuration/proxy")
 
 	if err != nil {
+		fmt.Printf(err.Error())
 		panic("Cannot get latest file")
 	}
 
