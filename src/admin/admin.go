@@ -47,7 +47,6 @@ func (adm *Admin) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		res.Write([]byte("Ok"))
 
 		adm.connection <- Watch.All
-		adm.GetProxy().Update()
 
 		return
 	}

@@ -21,6 +21,7 @@ func NewProxies(cfg *config.Proxy, ch chan wt.Event) *Proxies {
 	for _, host := range cfg.GetUpstreams() {
 		retv.GetEventLoop().RegisterChannel(host)
 	}
+	go retv.Update()
 	return retv
 }
 
