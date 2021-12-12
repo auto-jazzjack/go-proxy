@@ -20,28 +20,42 @@ type RepositoryImpl interface {
 	GetConf()
 }
 
+const PREFIX = "proxy"
+const POSTFIX = ".yaml"
+
 func NewRepository() *Repository {
 	return &Repository{version: getLatestVersion("../configuration")}
 }
 
 func (rp *Repository) GetConf() *config.Proxy {
 
-	yamlFile, err := ioutil.ReadFile("../configuration/proxy" + rp.version + ".yaml")
+	yamlFile, err := ioutil.ReadFile("../configuration/" + PREFIX + rp.version + POSTFIX)
 	if err != nil {
 		panic("yamlFile.Get err")
 	}
 
-	var v = &config.Config{}
-
 	var json, err1 = yamlToJson.YAMLToJSON(yamlFile)
-	jsonpb.UnmarshalString(string(json), v)
 
 	if err1 != nil {
-		panic("marformed" + string(yamlFile))
+		panic("Connot parse yaml to json")
 	}
 
-	fmt.Println(v)
+	var v, err2 = parserConfig(json)
+
+	if err2 != nil {
+		panic("Connot parse json to protobuf")
+	}
 	return v.Config
+}
+
+func parserConfig(jsonByte []byte) (*config.Config, error) {
+	var v = &config.Config{}
+	var err = jsonpb.UnmarshalString(string(jsonByte), v)
+
+	if err != nil {
+		return nil, err
+	}
+	return v, nil
 }
 
 func getLatestVersion(path string) string {
@@ -67,10 +81,22 @@ func getLatestVersion(path string) string {
 		}
 	}
 
-	retv = strings.Split(retv, ".")[0]           //select head
-	return strings.Replace(retv, "proxy", "", 1) //remove common part
+	retv = strings.Split(retv, ".")[0]          //select head
+	return strings.Replace(retv, PREFIX, "", 1) //remove common part
 }
 
-func (rp *Repository) CreateRevision() {
+func (rp *Repository) CreateRevision(data string) error {
+
+	var _, validate = parserConfig([]byte(data))
+
+	if validate != nil {
+		return validate
+	}
+
+	var err = ioutil.WriteFile("../configuration/"+PREFIX+rp.version+POSTFIX, []byte(data), 0644)
+	if err != nil {
+		return err
+	}
+	return nil
 	//copy current proto file with version
 }

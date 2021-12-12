@@ -1,6 +1,8 @@
 package Admin
 
 import (
+	"net/http"
+	"net/http/httputil"
 	Proxies "proxy/src/proxies"
 	px "proxy/src/proxies"
 	rp "proxy/src/repository"
@@ -9,7 +11,7 @@ import (
 
 type Admin struct {
 	proxy      *px.Proxies
-	repo		*rp.Repository
+	repo       *rp.Repository
 	connection chan wt.Event
 }
 
@@ -30,10 +32,26 @@ func NewAdmin() *Admin {
 	}
 }
 
-func (adm *Admin) update() {
-
+func (adm *Admin) Update(data string) {
+	var err = adm.repo.CreateRevision(data)
+	if err != nil {
+		panic("Can not create revision")
+	}
 }
 
-func (adm *Admin) GetProxy() *px.Proxies{
+func (adm *Admin) GetProxy() *px.Proxies {
 	return adm.proxy
+}
+
+func (adm *Admin) ServeHTTP(res http.ResponseWriter, req *http.Request) {
+	if req.RequestURI == "/update/configuration" {
+
+		var body, _ = httputil.DumpRequest(req, true)
+		adm.repo.CreateRevision(string(body))
+		res.WriteHeader(http.StatusOK)
+		res.Write([]byte("Ok"))
+		return
+	}
+
+	res.WriteHeader(http.StatusNotFound)
 }
