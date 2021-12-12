@@ -2,7 +2,6 @@ package Admin
 
 import (
 	"net/http"
-	"net/http/httputil"
 	Proxies "proxy/src/proxies"
 	px "proxy/src/proxies"
 	rp "proxy/src/repository"
@@ -46,7 +45,10 @@ func (adm *Admin) GetProxy() *px.Proxies {
 func (adm *Admin) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	if req.RequestURI == "/update/configuration" {
 
-		var body, _ = httputil.DumpRequest(req, true)
+		len := req.ContentLength
+		body := make([]byte, len)
+		req.Body.Read(body)
+
 		adm.repo.CreateRevision(string(body))
 		res.WriteHeader(http.StatusOK)
 		res.Write([]byte("Ok"))

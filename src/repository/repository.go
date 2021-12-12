@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strings"
+	"time"
 
 	"github.com/golang/protobuf/jsonpb"
 
@@ -93,10 +94,19 @@ func (rp *Repository) CreateRevision(data string) error {
 		return validate
 	}
 
-	var err = ioutil.WriteFile("../configuration/"+PREFIX+rp.version+POSTFIX, []byte(data), 0644)
+	var dt = time.Now().Format("20200131150405")
+	var yml, err1 = yamlToJson.JSONToYAML([]byte(data))
+
+	if err1 != nil {
+		return err1
+	}
+
+	var err = ioutil.WriteFile("../configuration/"+PREFIX+dt+POSTFIX, []byte(yml), 0644)
 	if err != nil {
 		return err
 	}
+
+	rp.version = dt
 	return nil
 	//copy current proto file with version
 }
