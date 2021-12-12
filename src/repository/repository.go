@@ -94,7 +94,7 @@ func (rp *Repository) CreateRevision(data string) error {
 		return validate
 	}
 
-	var dt = time.Now().Format("20200131150405")
+	var dt = time.Now().Format("20060102150405")
 	var yml, err1 = yamlToJson.JSONToYAML([]byte(data))
 
 	if err1 != nil {
