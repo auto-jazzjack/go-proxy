@@ -3,6 +3,7 @@ package Repository
 import (
 	"fmt"
 	"io/ioutil"
+	"strings"
 
 	"github.com/golang/protobuf/jsonpb"
 
@@ -20,7 +21,7 @@ type RepositoryImpl interface {
 }
 
 func NewRepository() *Repository {
-	return &Repository{version: ""}
+	return &Repository{version: getLatestVersion("../configuration")}
 }
 
 func (rp *Repository) GetConf() *config.Proxy {
@@ -43,8 +44,8 @@ func (rp *Repository) GetConf() *config.Proxy {
 	return v.Config
 }
 
-func getLatestVersion() string {
-	var files, err = ioutil.ReadDir("../configuration/proxy")
+func getLatestVersion(path string) string {
+	var files, err = ioutil.ReadDir(path)
 
 	if err != nil {
 		fmt.Printf(err.Error())
@@ -58,12 +59,16 @@ func getLatestVersion() string {
 	var retv = files[0].Name()
 
 	for _, itr := range files {
+		if strings.Count(itr.Name(), ".") != 1 {
+			continue
+		}
 		if retv < itr.Name() {
 			retv = itr.Name()
 		}
 	}
-	return retv
 
+	retv = strings.Split(retv, ".")[0]           //select head
+	return strings.Replace(retv, "proxy", "", 1) //remove common part
 }
 
 func (rp *Repository) CreateRevision() {

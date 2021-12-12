@@ -7,6 +7,6 @@ import (
 )
 
 func TestGetLatestVersion(t *testing.T) {
-	filename := getLatestVersion()
-	assert.Equal(t, "ss", filename)
+	filename := getLatestVersion("../../configuration")
+	assert.Equal(t, "proxy.yaml", filename)
 }
