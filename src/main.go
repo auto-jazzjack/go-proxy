@@ -17,7 +17,7 @@ func main() {
 	var admin = ad.NewAdmin()
 
 	http.Handle("/metrics", promhttp.Handler())
-
-	http.ListenAndServe(":9393", admin.GetProxy().GetEventLoop())
-
+	http.Handle("/", admin.GetProxy().GetEventLoop())
+	http.ListenAndServe(":9393", nil)
+	//http.ListenAndServe(":9393", admin.GetProxy().GetEventLoop())
 }
