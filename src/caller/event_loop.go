@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"proxy/proto/go/proxy/config"
 	ch "proxy/src/channel"
+	metrics "proxy/src/metrics"
+	"time"
 )
 
 type Eventloop struct {
@@ -27,14 +29,20 @@ func (el *Eventloop) RegisterChannel(host string) {
 }
 
 func (el *Eventloop) ServeHTTP(res http.ResponseWriter, req *http.Request) {
+
+	//start time
+	now := time.Now().UnixMilli()
+	var code = 0
+
 	if el.rl != nil {
 		if el.rl.TryConsume(1) {
-			el.channels[el.pos].CallRemote(&res, req)
+			code = el.channels[el.pos].CallRemote(&res, req)
 		} else {
-			el.channels[el.pos].CallTooManyRequest(&res)
+			code = el.channels[el.pos].CallTooManyRequest(&res)
 		}
-		return
+	} else {
+		code = el.channels[el.pos].CallRemote(&res, req)
 	}
 
-	el.channels[el.pos].CallRemote(&res, req)
+	metrics.MeasureCountAndLatency(code, now)
 }
