@@ -20,6 +20,7 @@ func NewEventLoop(cfg *config.Proxy) *Eventloop {
 	return &Eventloop{
 		channels: []*ch.Channel{},
 		rl:       NewRateLimiter(cfg.RateLimit),
+		handlers: make(map[string]http.Handler),
 	}
 }
 

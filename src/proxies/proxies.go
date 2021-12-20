@@ -13,7 +13,7 @@ type Proxies struct {
 
 func NewProxies(cfg *config.Proxy) *Proxies {
 	var retv = &Proxies{
-		event_loop: el.NewEventLoop(),
+		event_loop: el.NewEventLoop(cfg),
 	}
 
 	for _, host := range cfg.GetUpstreams() {
