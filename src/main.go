@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	ad "proxy/src/admin"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 type Channel struct {
@@ -11,7 +13,9 @@ type Channel struct {
 }
 
 func main() {
+
 	fmt.Println("started")
 	var admin = ad.NewAdmin()
+	admin.GetProxy().GetEventLoop().RegisterHandler("/metrics", promhttp.Handler())
 	http.ListenAndServe(":9393", admin.GetProxy().GetEventLoop())
 }

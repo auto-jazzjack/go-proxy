@@ -58,7 +58,7 @@ func createRequestForUpstream(req *http.Request, port int) *http.Request {
 	return retv
 }
 
-func (h Channel) CallRemote(res *http.ResponseWriter, req *http.Request) {
+func (h Channel) CallRemote(res *http.ResponseWriter, req *http.Request) int {
 	var replaced = createRequestForUpstream(req, h.port)
 	var resp, err = h.client.Do(replaced)
 
@@ -77,8 +77,11 @@ func (h Channel) CallRemote(res *http.ResponseWriter, req *http.Request) {
 		}
 		(*res).Write(body)
 	}
+
+	return resp.StatusCode
 }
 
-func (h Channel) CallTooManyRequest(res *http.ResponseWriter) {
+func (h Channel) CallTooManyRequest(res *http.ResponseWriter) int {
 	(*res).WriteHeader(429)
+	return 429
 }
