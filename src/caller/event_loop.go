@@ -40,7 +40,7 @@ func (el *Eventloop) RegisterHandler(key string, value http.Handler) {
 func (el *Eventloop) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 
 	//start time
-	now := time.Now().UnixMilli()
+	now := time.Now()
 	var code = 0
 
 	var adminHandler = el.handlers[req.RequestURI]

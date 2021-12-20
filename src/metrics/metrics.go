@@ -23,7 +23,7 @@ type GeneralMetric struct {
 	histogram *prometheus.HistogramVec
 }
 
-func MeasureCountAndLatency(code int, uri string, from int64) {
+func MeasureCountAndLatency(code int, uri string, from time.Time) {
 
 	var clonedLabel = []string{}
 
@@ -41,11 +41,10 @@ func MeasureCountAndLatency(code int, uri string, from int64) {
 		return
 	}
 
-	now := time.Now().UnixMilli()
-	elapsed := float64(now - from)
+	duration := time.Since(from)
 
 	cachedMetricObject[uri].counter.WithLabelValues(clonedLabel...).Add(1)
-	cachedMetricObject[uri].histogram.WithLabelValues(clonedLabel...).Observe(elapsed)
+	cachedMetricObject[uri].histogram.WithLabelValues(clonedLabel...).Observe(float64(duration.Milliseconds()))
 
 }
 
