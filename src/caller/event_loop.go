@@ -59,5 +59,5 @@ func (el *Eventloop) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		code = el.channels[el.pos].CallRemote(&res, req)
 	}
 
-	metrics.MeasureCountAndLatency(code, now)
+	metrics.MeasureCountAndLatency(code, "", now)
 }
