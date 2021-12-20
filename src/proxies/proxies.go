@@ -2,7 +2,7 @@ package Proxies
 
 import (
 	config "proxy/proto/go/proxy/config"
-	el "proxy/src/caller"
+	el "proxy/src/event_loop"
 	wt "proxy/src/watch"
 )
 
@@ -13,7 +13,7 @@ type Proxies struct {
 
 func NewProxies(cfg *config.Proxy) *Proxies {
 	var retv = &Proxies{
-		event_loop: el.NewEventLoop(cfg),
+		event_loop: el.NewEventLoop(),
 	}
 
 	for _, host := range cfg.GetUpstreams() {

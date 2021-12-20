@@ -13,6 +13,7 @@ type Eventloop struct {
 	rl       *RateLimiter
 	pos      int64
 	size     int64
+	handlers map[string]http.Handler
 }
 
 func NewEventLoop(cfg *config.Proxy) *Eventloop {
@@ -28,11 +29,24 @@ func (el *Eventloop) RegisterChannel(host string) {
 	el.size = int64(len(el.channels))
 }
 
+func (el *Eventloop) RegisterHandler(key string, value http.Handler) {
+	if el.handlers[key] != nil {
+		panic("Already registered")
+	}
+	el.handlers[key] = value
+}
+
 func (el *Eventloop) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 
 	//start time
 	now := time.Now().UnixMilli()
 	var code = 0
+
+	var adminHandler = el.handlers[req.RequestURI]
+	if adminHandler != nil {
+		adminHandler.ServeHTTP(res, req)
+		return
+	}
 
 	if el.rl != nil {
 		if el.rl.TryConsume(1) {
