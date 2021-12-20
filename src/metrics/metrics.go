@@ -52,7 +52,7 @@ func increaseTimer(label map[string]string, from int64) {
 }
 
 func newCounter(name string, labels map[string]string) prometheus.Counter {
-	return promauto.NewCounter(
+	return promauto.With(prometheus.NewRegistry()).NewCounter(
 		prometheus.CounterOpts{
 			Name:        name,
 			ConstLabels: labels,
@@ -62,7 +62,7 @@ func newCounter(name string, labels map[string]string) prometheus.Counter {
 
 func newHistogram(name string, labels map[string]string) prometheus.Histogram {
 
-	return promauto.NewHistogram(
+	return promauto.With(prometheus.NewRegistry()).NewHistogram(
 		prometheus.HistogramOpts{
 			Name:        name,
 			ConstLabels: labels,

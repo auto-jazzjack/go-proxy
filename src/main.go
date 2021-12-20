@@ -25,7 +25,7 @@ func main() {
 	go func() {
 		defer wg.Done()
 		http.Handle("/metrics", promhttp.Handler())
-		http.ListenAndServe(":9393", nil)
+		http.ListenAndServe(":9001", nil)
 	}()
 
 	//proxy go
