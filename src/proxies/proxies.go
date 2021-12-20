@@ -2,7 +2,7 @@ package Proxies
 
 import (
 	config "proxy/proto/go/proxy/config"
-	el "proxy/src/event_loop"
+	el "proxy/src/caller"
 	wt "proxy/src/watch"
 )
 
