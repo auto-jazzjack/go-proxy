@@ -28,7 +28,7 @@ func NewRateLimiter(cf *config.Proxy) *RateLimiter {
 	}
 }
 
-func (rl RateLimiter) CanSupport(cf *config.Proxy) bool {
+func (rl *RateLimiter) CanSupport(cf *config.Proxy) bool {
 	var ratelimit = cf.RateLimit
 	if ratelimit == nil {
 		return false
@@ -39,18 +39,18 @@ func (rl RateLimiter) CanSupport(cf *config.Proxy) bool {
 	return true
 }
 
-func (rl RateLimiter) TryConsume(*http.Request) bool {
+func (rl *RateLimiter) TryConsume(*http.Request) bool {
 	return rl.limiter.AllowN(time.Now(), 1)
 }
 
-func (rl RateLimiter) IsEnabled() bool {
+func (rl *RateLimiter) IsEnabled() bool {
 	return rl.enabled
 }
 
-func (rl RateLimiter) Order() int {
+func (rl *RateLimiter) Order() int {
 	return 0
 }
 
-func (rl RateLimiter) FallbackHttpStatus() int {
+func (rl *RateLimiter) FallbackHttpStatus() int {
 	return http.StatusTooManyRequests
 }
