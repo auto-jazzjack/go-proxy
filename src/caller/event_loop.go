@@ -28,11 +28,9 @@ func NewEventLoop(cfg *config.Proxy) *Eventloop {
 func createProxyPlugin(cfg *config.Proxy) []ProxyPluginImpl {
 
 	var retv = []ProxyPluginImpl{}
-	idx := 0
 
 	if NewRateLimiter(cfg).IsEnabled() {
-		retv[idx] = NewRateLimiter(cfg)
-		idx++
+		retv = append(retv, NewRateLimiter(cfg))
 	}
 
 	sort.Slice(retv, func(i, j int) bool {
