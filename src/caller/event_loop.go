@@ -5,12 +5,13 @@ import (
 	"proxy/proto/go/proxy/config"
 	ch "proxy/src/channel"
 	metrics "proxy/src/metrics"
+	"sort"
 	"time"
 )
 
 type Eventloop struct {
 	channels []*ch.Channel
-	rl       *RateLimiter
+	plugins  []ProxyPluginImpl
 	pos      int64
 	size     int64
 	handlers map[string]http.Handler
@@ -19,9 +20,26 @@ type Eventloop struct {
 func NewEventLoop(cfg *config.Proxy) *Eventloop {
 	return &Eventloop{
 		channels: []*ch.Channel{},
-		rl:       NewRateLimiter(cfg.RateLimit),
 		handlers: make(map[string]http.Handler),
+		plugins:  createProxyPlugin(cfg),
 	}
+}
+
+func createProxyPlugin(cfg *config.Proxy) []ProxyPluginImpl {
+
+	var retv = []ProxyPluginImpl{}
+	idx := 0
+
+	if NewRateLimiter(cfg).IsEnabled() {
+		retv[idx] = NewRateLimiter(cfg)
+		idx++
+	}
+
+	sort.Slice(retv, func(i, j int) bool {
+		return retv[i].Order() < retv[j].Order()
+	})
+
+	return retv
 }
 
 func (el *Eventloop) RegisterChannel(host string) {
@@ -49,15 +67,14 @@ func (el *Eventloop) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if el.rl != nil {
-		if el.rl.TryConsume(1) {
-			code = el.channels[el.pos].CallRemote(&res, req)
-		} else {
-			code = el.channels[el.pos].CallTooManyRequest(&res)
+	for _, val := range el.plugins {
+		if !val.TryConsume(req) {
+			res.WriteHeader(val.FallbackHttpStatus())
+			return
 		}
-	} else {
-		code = el.channels[el.pos].CallRemote(&res, req)
 	}
+
+	code = el.channels[el.pos].CallRemote(&res, req)
 
 	metrics.MeasureCountAndLatency(code, req.RequestURI, now)
 }

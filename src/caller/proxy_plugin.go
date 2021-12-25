@@ -1,7 +1,17 @@
 package Caller
 
-import "proxy/proto/go/proxy/config"
+import (
+	"net/http"
+	"proxy/proto/go/proxy/config"
+)
 
-type ProxyPlugin interface {
-	CanSupport(config.Proxy) bool
+type ProxyPluginImpl interface {
+	CanSupport(*config.Proxy) bool
+	TryConsume(*http.Request) bool
+	IsEnabled() bool
+	Order() int
+	FallbackHttpStatus() int
+}
+
+type ProxyPlugin struct {
 }
