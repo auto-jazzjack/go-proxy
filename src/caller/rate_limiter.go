@@ -17,9 +17,9 @@ type RateLimiter struct {
 	enabled         bool
 }
 
-func NewRateLimiter(cf *config.Proxy) RateLimiter {
+func NewRateLimiter(cf *config.Proxy) *RateLimiter {
 
-	return RateLimiter{
+	return &RateLimiter{
 		qps:             cf.RateLimit.GetQps(),
 		threshhold:      cf.RateLimit.GetThreshhold(),
 		threshholdRatio: cf.RateLimit.GetThreshholdRatio(),

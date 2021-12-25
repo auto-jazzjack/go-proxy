@@ -65,9 +65,9 @@ func (el *Eventloop) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	for _, val := range el.plugins {
-		if !val.TryConsume(req) {
-			res.WriteHeader(val.FallbackHttpStatus())
+	for idx := range el.plugins {
+		if !el.plugins[idx].TryConsume(req) {
+			res.WriteHeader(el.plugins[idx].FallbackHttpStatus())
 			return
 		}
 	}
