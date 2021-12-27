@@ -1,15 +1,15 @@
 package Admin
 
 import (
-	Proxies "proxy/src/proxies"
-	px "proxy/src/proxies"
-	rp "proxy/src/repository"
-	wt "proxy/src/watch"
+	Proxies "proxy/proxies"
+	px "proxy/proxies"
+	rp "proxy/repository"
+	wt "proxy/watch"
 )
 
 type Admin struct {
 	proxy      *px.Proxies
-	repo		*rp.Repository
+	repo       *rp.Repository
 	connection chan wt.Event
 }
 
@@ -34,6 +34,6 @@ func (adm *Admin) update() {
 
 }
 
-func (adm *Admin) GetProxy() *px.Proxies{
+func (adm *Admin) GetProxy() *px.Proxies {
 	return adm.proxy
 }

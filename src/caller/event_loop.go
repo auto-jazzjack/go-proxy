@@ -2,9 +2,9 @@ package Caller
 
 import (
 	"net/http"
+	ch "proxy/channel"
+	metrics "proxy/metrics"
 	"proxy/proto/go/proxy/config"
-	ch "proxy/src/channel"
-	metrics "proxy/src/metrics"
 	"sort"
 	"time"
 )

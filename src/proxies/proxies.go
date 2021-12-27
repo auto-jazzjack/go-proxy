@@ -1,9 +1,9 @@
 package Proxies
 
 import (
+	el "proxy/caller"
 	config "proxy/proto/go/proxy/config"
-	el "proxy/src/caller"
-	wt "proxy/src/watch"
+	wt "proxy/watch"
 )
 
 type Proxies struct {

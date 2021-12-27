@@ -1,0 +1,20 @@
+syntax = "proto3";
+package proxy_config;
+option go_package = "go/proxy/config";
+
+
+//protoc -I. --go_out=. config.proto
+message Config {
+    Proxy config = 1;
+}
+
+message Proxy {
+    repeated string upstreams = 1;
+    RateLimit rate_limit = 2;
+}
+
+message RateLimit {
+    int64 qps = 1;
+    int64 threshhold = 2;
+    double threshholdRatio = 3;
+}
