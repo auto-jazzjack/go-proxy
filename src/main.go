@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
-	ad "proxy/src/admin"
+	ad "proxy/admin"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
