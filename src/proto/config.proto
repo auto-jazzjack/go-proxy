@@ -11,6 +11,7 @@ message Config {
 message Proxy {
     repeated string upstreams = 1;
     RateLimit rate_limit = 2;
+    int64       timeout = 3;
 }
 
 message RateLimit {

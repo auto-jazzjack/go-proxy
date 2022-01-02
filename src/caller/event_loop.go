@@ -23,6 +23,7 @@ func NewEventLoop(cfg *config.Proxy) *Eventloop {
 		channels: []*ch.Channel{},
 		handlers: make(map[string]http.Handler),
 		plugins:  createProxyPlugin(cfg),
+		timeout:  cfg.GetTimeout(),
 	}
 }
 

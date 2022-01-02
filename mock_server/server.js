@@ -9,7 +9,10 @@ const server = http.createServer((req, res) => {
 	res.setHeader('Content-Type', 'application/json');
 	
 	if(getRandomInt(0,10) > 5){
+		console.log("timeout")
 		stop.sleep(1)
+	} else {
+		console.log("pass")
 	}
 
 	console.log(req.method + ' ' + req.url + ' HTTP/' + req.httpVersion);
