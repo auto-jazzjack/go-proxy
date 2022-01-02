@@ -36,7 +36,7 @@ func NewChannel(host string, miliseconds int64) *Channel {
 
 	return &Channel{
 		client: &http.Client{
-			Timeout: time.Microsecond * time.Duration(miliseconds),
+			Timeout: time.Millisecond * time.Duration(miliseconds),
 		},
 		host: v[0],
 		port: _port,
