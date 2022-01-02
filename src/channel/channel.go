@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type Channel struct {
@@ -20,7 +21,7 @@ var headers = map[string]interface{}{
 	"Date":           nil,
 }
 
-func NewChannel(host string) *Channel {
+func NewChannel(host string, miliseconds int64) *Channel {
 
 	var v = strings.Split(host, ":")
 
@@ -34,9 +35,11 @@ func NewChannel(host string) *Channel {
 	}
 
 	return &Channel{
-		client: &http.Client{},
-		host:   v[0],
-		port:   _port,
+		client: &http.Client{
+			Timeout: time.Microsecond * time.Duration(miliseconds),
+		},
+		host: v[0],
+		port: _port,
 	}
 }
 
