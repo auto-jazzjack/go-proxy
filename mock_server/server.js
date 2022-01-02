@@ -1,5 +1,5 @@
 const http = require('http');
-const sleep = require('sleep');
+const stop = require('sleep');
 const hostname = '127.0.0.1';
 const port = 3000;
 
@@ -9,7 +9,7 @@ const server = http.createServer((req, res) => {
 	res.setHeader('Content-Type', 'application/json');
 	
 	if(getRandomInt(0,10) > 5){
-		sleep.sleep(1)
+		stop.sleep(1)
 	}
 
 	console.log(req.method + ' ' + req.url + ' HTTP/' + req.httpVersion);
