@@ -17,3 +17,5 @@
 pkg/
 bin/
 src/proxy
+
+mock_server/node_modules

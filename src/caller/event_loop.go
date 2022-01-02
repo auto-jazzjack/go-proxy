@@ -14,6 +14,7 @@ type Eventloop struct {
 	plugins  []ProxyPluginImpl
 	pos      int64
 	size     int64
+	timeout  int64
 	handlers map[string]http.Handler
 }
 
@@ -22,6 +23,7 @@ func NewEventLoop(cfg *config.Proxy) *Eventloop {
 		channels: []*ch.Channel{},
 		handlers: make(map[string]http.Handler),
 		plugins:  createProxyPlugin(cfg),
+		timeout:  cfg.GetTimeout(),
 	}
 }
 
@@ -41,7 +43,8 @@ func createProxyPlugin(cfg *config.Proxy) []ProxyPluginImpl {
 }
 
 func (el *Eventloop) RegisterChannel(host string) {
-	el.channels = append(el.channels, ch.NewChannel(host))
+
+	el.channels = append(el.channels, ch.NewChannel(host, el.timeout))
 	el.pos = 0
 	el.size = int64(len(el.channels))
 }

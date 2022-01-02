@@ -1,4 +1,5 @@
 config:
+  timeout: 100 #ms
   upstreams:
     - 127.0.0.1:3000
   rate_limit:
